@@ -4,7 +4,7 @@
 # Create a littlefs image of the specified directory on the host during build and optionally
 # have the created image flashed using `idf.py flash`
 set(MKLITTLEFS_DIR "${CMAKE_CURRENT_LIST_DIR}/mklittlefs")
-set(MKLITTLEFS "${MKLITTLEFS_DIR}/mklittlefs")
+set(MKLITTLEFS "${MKLITTLEFS_DIR}/mklittlefs.exe")
 
 function(littlefs_create_partition_image partition base_dir)
 	set(options FLASH_IN_PROJECT)
@@ -18,14 +18,14 @@ function(littlefs_create_partition_image partition base_dir)
 	partition_table_get_partition_info(size "--partition-name ${partition}" "size")
 	partition_table_get_partition_info(offset "--partition-name ${partition}" "offset")
 
-	add_custom_command(
-		OUTPUT ${MKLITTLEFS}
-		COMMAND make dist
-		WORKING_DIRECTORY ${MKLITTLEFS_DIR}
-	)
+	#add_custom_command(
+	#	OUTPUT ${MKLITTLEFS}
+	#	COMMAND make dist
+	#	WORKING_DIRECTORY ${MKLITTLEFS_DIR}
+	#)
 
 	if("${size}" AND "${offset}")
-		set(image_file ${CMAKE_BINARY_DIR}/${partition}.bin)
+		set(image_file ${CMAKE_BINARY_DIR}/${partition}_ESP32.bin)
 
 		# Execute LittleFS image generation; this always executes as there is no way to specify for CMake to watch for
 		# contents of the base dir changing.
